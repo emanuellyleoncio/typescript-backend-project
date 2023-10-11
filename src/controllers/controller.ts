@@ -19,6 +19,8 @@ export const getCar = async (req: Request, res: Response) => {
         if (!car) {
             return res.status(404).json({ message: 'Car was not found!'})
         }
+
+        return res.json(car);
     } catch (error: any) {
         return res.status(400).json({ message: error.message });
     }
@@ -40,14 +42,35 @@ export const createCar = async (req: Request, res: Response) => {
             price
         }).returning('*');
 
-        return res.status(201).json(car);
+        return res.status(201).json(car[0]);
     } catch (error: any) {
         return res.status(400).json({ message: error.message });
     }
 };
 
 export const updateCar = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { brand, model, year, color, price } = req.body;
 
+    try {
+        const car = await knex<Car>('cars').where({ id: Number(id) }).first();
+
+        if (!car) {
+            return res.status(404).json({ message: 'Car was not found!'})
+        };
+
+        await knex<Car>('cars').update({
+            brand, 
+            model, 
+            year, 
+            color, 
+            price
+        }).where({ id: Number(id) });
+
+        return res.status(204).send();
+    } catch (error: any) {
+        return res.status(400).json({ message: error.message });
+    }
 };
 
 export const deleteCar = async (req: Request, res: Response) => {
