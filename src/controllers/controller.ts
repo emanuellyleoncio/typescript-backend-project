@@ -74,5 +74,19 @@ export const updateCar = async (req: Request, res: Response) => {
 };
 
 export const deleteCar = async (req: Request, res: Response) => {
+    const { id } = req.params;
 
+    try {
+        const car = await knex<Car>('cars').where({ id: Number(id) }).first();
+
+        if (!car) {
+            return res.status(404).json({ message: 'Car was not found!'})
+        };
+
+        await knex<Car>('cars').where({ id: Number(id) }).del();
+
+        return res.status(204).send();
+    } catch (error: any) {
+        return res.status(400).json({ message: error.message });
+    }
 };
