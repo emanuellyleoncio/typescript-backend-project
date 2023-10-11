@@ -1,6 +1,6 @@
-import {Request, Response} from 'express';
-import {knex} from '../database/connection';
-import {Car} from '../types';
+import { Request, Response } from 'express';
+import { knex } from '../database/connection';
+import { Car } from '../types';
 
 export const getAllCars = async (req: Request, res: Response) => {
     try {
@@ -25,7 +25,25 @@ export const getCar = async (req: Request, res: Response) => {
 };
 
 export const createCar = async (req: Request, res: Response) => {
+    const { brand, model, year, color, price } = req.body;
 
+    try {
+        if (!brand || !model || !year || !color || !price) {
+            return res.status(406).json({ message: 'All attributes must be informed.'})
+        };
+
+        const car = await knex<Omit<Car, 'id'>>('cars').insert({
+            brand, 
+            model, 
+            year, 
+            color, 
+            price
+        }).returning('*');
+
+        return res.status(201).json(car);
+    } catch (error: any) {
+        return res.status(400).json({ message: error.message });
+    }
 };
 
 export const updateCar = async (req: Request, res: Response) => {
