@@ -1,0 +1,225 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Cars CRUD",
+        "description": "Restful API of Cars using Express and Typescript",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "/api-docs",
+    "tags": [
+        {
+            "name": "Cars",
+            "description": "API for cars in the system"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/cars": {
+            "get": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Get all cars in system",
+                "responses": {
+                    "200": {
+                        "description": "All cars in system",
+                        "schema": {
+                            "$ref": "#/definitions/Car"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Create new car in system",
+                "parameters": [
+                    {
+                        "name": "Car",
+                        "in": "body",
+                        "required": true,
+                        "description": "Car that we want to add in the system.",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/CreateCar"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "New car was created",
+                        "schema": {
+                            "$ref": "#/definitions/Car"
+                        }
+                    },
+                    "406": {
+                        "description": "All attributes must be informed."
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/cars/{id}": {
+            "get": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Returns a car by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The ID of the car to find.",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A car object",
+                        "schema": {
+                            "$ref": "#/definitions/Car"
+                        }
+                    },
+                    "404": {
+                        "description": "The car was not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Update car in system by ID",
+                "parameters" : [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "description": "The ID of the car to update."
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Car was updated",
+                        "schema": {
+                            "$ref": "#/definitions/Car"
+                        }
+                    },
+                    "404": {
+                        "description": "The car was not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Delete car in system by ID",
+                "parameters" : [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "description": "The ID of the car to delete."
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Car was deleted"
+                    },
+                    "404": {
+                        "description": "The car was not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Car": {
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "uniqueItems": true,
+                    "example": 2
+                },
+                "brand": {
+                    "type": "string",
+                    "example": "Chevrolet"
+                },
+                "model": {
+                    "type": "string",
+                    "example": "Prisma"
+                },
+                "year": {
+                    "type": "number",
+                    "example": 2022
+                },
+                "color": {
+                    "type": "string",
+                    "example": "Silver"
+                }
+            }
+        },
+        "CreateCar": {
+            "properties": {
+                "brand": {
+                    "type": "string",
+                    "example": "Chevrolet"
+                },
+                "model": {
+                    "type": "string",
+                    "example": "Prisma"
+                },
+                "year": {
+                    "type": "number",
+                    "example": 2022
+                },
+                "color": {
+                    "type": "string",
+                    "example": "Silver"
+                }
+            }
+        }
+    }
+}
+  
